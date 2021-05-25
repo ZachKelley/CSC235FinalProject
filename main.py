@@ -5,9 +5,20 @@ from Config import *
 
 
 def main():
-    pass
+    running = True
 
+    while running:
+        WIN.fill(BLUE)
+        pygame.display.update()
 
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                running = False
+
+        pygame.display.update()
+
+    pygame.quit()
 
 
 
