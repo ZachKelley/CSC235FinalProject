@@ -97,10 +97,12 @@ class laserflea(pygame.sprite.Sprite):
             self.state = self.states.WALKRIGHT
             self.animation = self.animationdic[self.state]
             self.image = self.animation[0]
+            self.facing = "right"
         else:
             self.state = self.states.WALKLEFT
             self.animation = self.animationdic[self.state]
             self.image = self.animation[0]
+            self.facing = "left"
         self.index = 0
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -108,7 +110,7 @@ class laserflea(pygame.sprite.Sprite):
         self.rect.center = (self.width / 2, self.height / 2)
         self.rect.x = Config.WIDTH/2
         self.rect.y = Config.HEIGHT/2
-        self.rect.x = 0
+        self.rect.x = 5000
         self.rect.y = Config.HEIGHT / 2
 
     def update(self):
@@ -119,12 +121,14 @@ class laserflea(pygame.sprite.Sprite):
 
         if self.state == self.states.IDLELEFT:
             self.image = self.animation[self.index]
+            self.facing = "left"
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.IDLELTOR
                 self.animation = self.animationdic[self.state]
         elif self.state == self.states.IDLERIGHT:
             self.image = self.animation[self.index]
+            self.facing = "right"
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.IDLERTOL
@@ -134,16 +138,19 @@ class laserflea(pygame.sprite.Sprite):
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.IDLERIGHT
+                self.facing = "right"
                 self.animation = self.animationdic[self.state]
         elif self.state == self.states.IDLERTOL:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.IDLELEFT
+                self.facing = "left"
                 self.animation = self.animationdic[self.state]
         elif self.state == self.states.WALKLEFT:
             self.image = self.animation[self.index]
             self.rect.x -= 3
+            self.facing = "left"
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.WALKLTOR
@@ -151,6 +158,7 @@ class laserflea(pygame.sprite.Sprite):
         elif self.state == self.states.WALKRIGHT:
             self.image = self.animation[self.index]
             self.rect.x += 3
+            self.facing = "right"
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.WALKRTOL
@@ -160,12 +168,14 @@ class laserflea(pygame.sprite.Sprite):
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.WALKRIGHT
+                self.facing = "right"
                 self.animation = self.animationdic[self.state]
         elif self.state == self.states.WALKRTOL:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 self.state = self.states.WALKLEFT
+                self.facing = "left"
                 self.animation = self.animationdic[self.state]
         elif self.state == self.states.LASERLEFT:
             self.image = self.animation[self.index]
@@ -173,19 +183,16 @@ class laserflea(pygame.sprite.Sprite):
                 self.shootlaser("left")
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.IDLELTOR
-                self.animation = self.animationdic[self.state]
         elif self.state == self.states.LASERRIGHT:
             self.image = self.animation[self.index]
             if self.index >= len(self.animation) - 8:
                 self.shootlaser("right")
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.IDLERTOL
-                self.animation = self.animationdic[self.state]
 
         if self.rect.bottom >= Config.HEIGHT:
             self.rect.bottom = Config.HEIGHT
+
 
         pygame.draw.rect(Config.WIN, Config.RED, self.rect, 2)
         self.counter += 1
