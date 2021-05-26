@@ -112,13 +112,12 @@ class laserflea(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
-        self.rect.center = (self.width / 2, self.height / 2)
+        self.rect.center = (self.image.get_width()/2, self.image.get_height()/2)
         self.rect.x = Config.WIDTH/2
         self.rect.y = Config.HEIGHT/2
-        self.rect.x = 0
-        self.rect.y = Config.HEIGHT / 2
 
     def update(self):
+        self.animation = self.animationdic[self.state]
 
         if self.counter >= 2:
             self.index += 1
@@ -210,7 +209,7 @@ class laserflea(pygame.sprite.Sprite):
             newimg.fill((0, 0, 0, 0))
             newimg.blit(self.laser, (10, 15))
             newimg.blit(self.image, (newimg.get_width() - self.image.get_width(), 0))
-            self.rect.right = self.rect.x + 64
+            self.rect.right = self.rect.x + 200
             self.image = newimg
         else:
             newimg = Surface(
