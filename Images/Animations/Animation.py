@@ -17,6 +17,7 @@ class Animation():
         self.dy = dy
         self.num = num
         self.scale = scale
+        self.scalefactor = 64
 
     def build(self):
         while self.currenty != self.image.get_height():
@@ -26,7 +27,7 @@ class Animation():
                 if self.flip:
                     i = pygame.transform.flip(i, True, False)
                 if self.scale:
-                    i = pygame.transform.scale(i, (64, 64))
+                    i = pygame.transform.scale(i, (self.scalefactor, self.scalefactor))
                 self.animation.append(i)
                 if self.currentx == self.image.get_width() - (self.dx * (self.num + 1)):
                     self.currentx = 0
@@ -38,9 +39,9 @@ class Animation():
                 if self.flip:
                     i = pygame.transform.flip(i, True, False)
                 if self.scale:
-                    i = pygame.transform.scale(i, (64, 64))
+                    i = pygame.transform.scale(i, (self.scalefactor, self.scalefactor))
                 self.animation.append(i)
-                if self.currentx == self.image.get_width() - self.dx:
+                self.currentx += self.dx
+                if self.currentx == self.image.get_width():
                     self.currentx = 0
                     self.currenty += self.dy
-                self.currentx += self.dx

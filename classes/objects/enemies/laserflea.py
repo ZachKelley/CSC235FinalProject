@@ -28,38 +28,46 @@ class laserflea(pygame.sprite.Sprite):
     idle = pygame.image.load("./Images/enemies/laser-flea/idle_change_direction.png").convert_alpha()
     idleleft = Animation(idle, 222, 222, flip=True, num=1)
     idleleft.currenty = (idleleft.dy * 2)
+    idleleft.scalefactor = 200
     idleleft.build()
     idleleft = idleleft.animation
     idleright = Animation(idle, 222, 222, num=1)
     idleright.currenty = (idleright.dy * 2)
+    idleright.scalefactor = 200
     idleright.build()
     idleright = idleright.animation
 
     idlertol = Animation(idle, 222, 222, flip=True, num=1)
+    idlertol.scalefactor = 200
     idlertol.build()
     idlertol = idlertol.animation
 
     idleltor = Animation(idle, 222, 222, num=1)
+    idleltor.scalefactor = 200
     idleltor.build()
     idleltor = idleltor.animation
 
     walk = pygame.image.load("./Images/enemies/laser-flea/walk_change_direction.png").convert_alpha()
     walkrtol = Animation(walk, 220, 230, num=1)
+    walkrtol.scalefactor = 200
     walkrtol.build()
     walkrtol = walkrtol.animation
 
     walkltor = Animation(walk, 220, 230, flip=True, num=1)
+    walkltor.scalefactor = 200
     walkltor.build()
     walkltor = walkltor.animation
 
-    walkleft = walkrtol[8:]
-    walkright = walkltor[8:]
+    walkleft = walkrtol[10:]
+    walkright = walkltor[10:]
 
     laseratk = pygame.image.load("./Images/enemies/laser-flea/lasser_swept.png").convert_alpha()
     laserleft = Animation(laseratk, 221, 224)
+    laserleft.scalefactor = 200
     laserleft.build()
     laserleft = laserleft.animation[0:35]
     laserright = Animation(laseratk, 221, 224, flip=True)
+    laserright.scalefactor = 200
     laserright.build()
     laserright = laserright.animation[0:35]
 
@@ -107,12 +115,12 @@ class laserflea(pygame.sprite.Sprite):
         self.rect.center = (self.width / 2, self.height / 2)
         self.rect.x = Config.WIDTH/2
         self.rect.y = Config.HEIGHT/2
-        self.rect.x = 5000
+        self.rect.x = 0
         self.rect.y = Config.HEIGHT / 2
 
     def update(self):
 
-        if self.counter >= 5:
+        if self.counter >= 2:
             self.index += 1
             self.counter = 0
 
