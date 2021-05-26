@@ -51,4 +51,6 @@ def updatemap():
     global map
     map
     map.fill((255,255,255))
+    for g in ground_sprites:
+        g.image.convert_alpha()
     ground_sprites.draw(map)

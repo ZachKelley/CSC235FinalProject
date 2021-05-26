@@ -29,7 +29,6 @@ class poisonchomper(pygame.sprite.Sprite):
     idleright = Animation(idle, 175, 119, flip=True)
     idleright.build()
     idleright = idleright.animation
-    pygame.image.save(idleright[0], "idleright.png")
 
     jump = pygame.image.load("./Images/enemies/poison-chomper/jump-cycle.png")
     jumpleft = Animation(jump, 304, 246)
@@ -38,7 +37,6 @@ class poisonchomper(pygame.sprite.Sprite):
     jumpright = Animation(jump, 304, 246, flip=True)
     jumpright.build()
     jumpright = jumpright.animation
-    pygame.image.save(jumpright[0], "jumpright.png")
 
     animationdic = {
         0: idleleft,

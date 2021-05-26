@@ -1,7 +1,5 @@
 import pygame
 from pygame import *
-
-
 class ground(pygame.sprite.Sprite):
 
     def __init__(self):
