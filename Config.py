@@ -5,7 +5,7 @@ from pygame import *
 from Images.Tiles.ground import ground
 
 pygame.init()
-map = Surface((10000, 1500))
+map = Surface((10000,1500))
 map.fill((255, 255, 255))
 
 ground_sprites = pygame.sprite.Group()
@@ -51,10 +51,3 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-
-def updatemap():
-    global map
-    map.fill((255,255,255))
-    for g in ground_sprites:
-        g.image.convert_alpha()
-    ground_sprites.draw(map)

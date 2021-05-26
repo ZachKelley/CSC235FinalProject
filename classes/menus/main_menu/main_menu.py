@@ -19,12 +19,12 @@ player_sprite.add(player)
 
 
 def run():
-    Config.updatemap()
-    test_sprites.draw(Config.map)
-    test_sprites.update()
-    player_sprite.draw(Config.map)
-    player_sprite.update()
+    Config.map = pygame.transform.flip(map, False, False)
     for t in test_sprites:
         pygame.display.update(t.rect)
     for p in player_sprite:
         pygame.display.update(p.rect)
+    test_sprites.draw(Config.map)
+    test_sprites.update()
+    player_sprite.draw(Config.map)
+    player_sprite.update()
