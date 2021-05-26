@@ -2,10 +2,15 @@
 import pygame
 from pygame import *
 
+
+pygame.init()
+
 WIDTH, HEIGHT = 1920, 1080
 flags = FULLSCREEN | DOUBLEBUF | SCALED
 WIN = pygame.display.set_mode((WIDTH,HEIGHT), flags, 16)
 pygame.display.set_caption("Eduardo's Journey")
+FPS = 60
+clock = pygame.time.Clock()
 
 current_menu = None
 

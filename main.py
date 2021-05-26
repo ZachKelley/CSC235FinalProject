@@ -2,21 +2,21 @@ import pygame
 from pygame import *
 import Config
 from Config import *
+from classes.menus.main_menu import main_menu
 
+current_menu = main_menu
 
 def main():
     running = True
 
     while running:
-        WIN.fill(BLUE)
-        pygame.display.update()
+        clock.tick(FPS)
+        current_menu.run()
 
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 running = False
-
-        pygame.display.update()
 
     pygame.quit()
 

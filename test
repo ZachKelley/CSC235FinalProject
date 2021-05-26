@@ -1,0 +1,24 @@
+        if self.state == self.states.WALKLEFT:
+            self.image = self.animation[self.index]
+            if self.index == len(self.animation) - 1:
+                self.index = 0
+                self.state = self.states.WALKLTOR
+                self.animation = self.animationdic[self.state]
+        elif self.state == self.states.WALKRIGHT:
+            self.image = self.animation[self.index]
+            if self.index == len(self.animation) - 1:
+                self.index = 0
+                self.state = self.states.WALKRTOL
+                self.animation = self.animationdic[self.state]
+        elif self.state == self.states.WALKLTOR:
+            self.image = self.animation[self.index]
+            if self.index == len(self.animation) - 1:
+                self.index = 0
+                self.state = self.states.WALKRIGHT
+                self.animation = self.animationdic[self.state]
+        elif self.state == self.states.WALKRTOL:
+            self.image = self.animation[self.index]
+            if self.index == len(self.animation) - 1:
+                self.index = 0
+                self.state = self.states.WALKLEFT
+                self.animation = self.animationdic[self.state]
