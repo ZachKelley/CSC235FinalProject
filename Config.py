@@ -16,7 +16,12 @@ x = 0
 y = 0
 for m in maplines:
     if m == 'g':
-        g = ground()
+        g = ground("top")
+        g.rect.x = x
+        g.rect.y = y
+        ground_sprites.add(g)
+    if m == 'u':
+        g = ground("under")
         g.rect.x = x
         g.rect.y = y
         ground_sprites.add(g)
@@ -49,7 +54,6 @@ BLUE = (0, 0, 255)
 
 def updatemap():
     global map
-    map
     map.fill((255,255,255))
     for g in ground_sprites:
         g.image.convert_alpha()

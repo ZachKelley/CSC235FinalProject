@@ -137,7 +137,7 @@ class Player(pygame.sprite.Sprite):
         for g in ground_sprites:
             if g.rect.left < self.rect.left < g.rect.right or g.rect.left < self.rect.right < g.rect.right:
                 if self.rect.bottom >= g.rect.top:
-                    self.rect.bottom = g.rect.top - 15
+                    self.rect.bottom = g.rect.top
                     self.grounded = True
 
         if self.jumping:
