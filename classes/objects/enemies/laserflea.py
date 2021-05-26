@@ -194,8 +194,17 @@ class laserflea(pygame.sprite.Sprite):
             if self.index == len(self.animation) - 1:
                 self.index = 0
 
-        if self.rect.bottom >= Config.HEIGHT:
-            self.rect.bottom = Config.HEIGHT
+
+        self.grounded = False
+        for g in ground_sprites:
+            if g.rect.left < self.rect.left < g.rect.right or g.rect.left < self.rect.right < g.rect.right:
+                if self.rect.bottom >= g.rect.top:
+                    self.rect.bottom = g.rect.top
+                    self.grounded = True
+            if self.facing == "left":
+                if g.rect.right >= self.rect.left:
+                    self.rect.left = g.rect.right
+        self.rect.y += 15
 
 
         pygame.draw.rect(Config.map, Config.RED, self.rect, 2)

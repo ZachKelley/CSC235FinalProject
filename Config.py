@@ -5,7 +5,7 @@ from pygame import *
 from Images.Tiles.ground import ground
 
 pygame.init()
-map = Surface((10000,1500))
+map = Surface((10000,750))
 map.fill((255, 255, 255))
 
 ground_sprites = pygame.sprite.Group()
@@ -28,7 +28,7 @@ for m in maplines:
     x += 100
     if m == '\n':
         x = 0
-        y += 100
+        y += 50
 
 ground_sprites.draw(map)
 pygame.image.save(map, "map1.png")

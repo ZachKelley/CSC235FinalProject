@@ -19,6 +19,8 @@ player_sprite.add(player)
 
 
 def run():
+    for g in ground_sprites:
+        pygame.draw.rect(Config.map, Config.RED, g.rect, 2)
     Config.map = pygame.transform.flip(map, False, False)
     for t in test_sprites:
         pygame.display.update(t.rect)
