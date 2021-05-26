@@ -10,7 +10,7 @@ test = laserflea("right")
 test2 = poisonchomper("right")
 player = Player("right")
 player.rect.x = 0
-player.rect.y = Config.map.get_height()/2 - 150
+player.rect.y = Config.map.get_height()/2
 test_sprites = pygame.sprite.Group()
 player_sprite = pygame.sprite.Group()
 test_sprites.add(test)

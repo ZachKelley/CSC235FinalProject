@@ -48,5 +48,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 def updatemap():
-    map.fill((255,255,255,0))
+    global map
+    map
+    map.fill((255,255,255))
     ground_sprites.draw(map)
