@@ -38,7 +38,6 @@ class laserflea(pygame.sprite.Sprite):
     idlertol = Animation(idle, 222, 222, flip=True, num=1)
     idlertol.build()
     idlertol = idlertol.animation
-    print(len(idlertol))
 
     idleltor = Animation(idle, 222, 222, num=1)
     idleltor.build()
@@ -55,8 +54,6 @@ class laserflea(pygame.sprite.Sprite):
 
     walkleft = walkrtol[8:]
     walkright = walkltor[8:]
-    print(len(walkltor))
-    print(len(walkleft))
 
     laseratk = pygame.image.load("./Images/enemies/laser-flea/lasser_swept.png").convert_alpha()
     laserleft = Animation(laseratk, 221, 224)
