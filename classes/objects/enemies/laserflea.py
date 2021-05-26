@@ -198,7 +198,7 @@ class laserflea(pygame.sprite.Sprite):
             self.rect.bottom = Config.HEIGHT
 
 
-        pygame.draw.rect(Config.WIN, Config.RED, self.rect, 2)
+        pygame.draw.rect(Config.map, Config.RED, self.rect, 2)
         self.counter += 1
 
     def shootlaser(self, dir):

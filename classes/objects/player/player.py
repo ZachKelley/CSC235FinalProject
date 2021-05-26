@@ -20,6 +20,7 @@ class Player(pygame.sprite.Sprite):
     # constants
     counter = 0
     shootcounter = 0
+    jumpcounter = 30
 
     # images
     idle = pygame.image.load("./Images/SpacemarineAssetPack/Sprites/SpaceMarine/SpriteSheets/94x80/idleSpriteSheet.png").convert_alpha()
@@ -54,6 +55,8 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, direction):
         pygame.sprite.Sprite.__init__(self)
+        self.grounded = True
+        self.jumping = False
         if direction == "right":
             self.state = self.states.IDLERIGHT
             self.animation = self.animationdic[self.state]
@@ -110,6 +113,9 @@ class Player(pygame.sprite.Sprite):
             if self.state != self.states.RUNRIGHT:
                 self.state = self.states.RUNRIGHT
                 self.index = 0
+        if keys[K_w]:
+            self.jumping = True
+            self.jumpcounter = 0
         if not keys.__contains__(1):
             if self.facing == "right":
                 if self.state != self.states.IDLERIGHT:
@@ -120,4 +126,24 @@ class Player(pygame.sprite.Sprite):
                     self.state = self.states.IDLELEFT
                     self.index = 0
 
+        if self.rect.x <= 0:
+            self.rect.x = 0
+        if self.rect.right >= Config.map.get_width():
+            self.rect.right = Config.map.get_width()
+
+        for g in ground_sprites:
+            if g.rect.left < self.rect.left < g.rect.right or g.rect.left < self.rect.right < g.rect.right:
+                if self.rect.bottom >= g.rect.top:
+                    self.rect.bottom = g.rect.top - 15
+
+        if self.jumping:
+            if self.jumpcounter < 10:
+                self.rect.y -= (15 - (3*self.jumpcounter))
+            else:
+                self.jumping = False
+            self.jumpcounter += 1
+        else:
+            self.rect.y += 15
+
         self.counter += 1
+        pygame.draw.rect(Config.map, Config.RED, self.rect, 2)
