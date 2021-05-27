@@ -9,7 +9,7 @@ from classes.objects.player.player import Player
 test = laserflea("right")
 test2 = poisonchomper("right")
 player = Player("right")
-player.rect.x = Config.map.get_width()
+player.rect.x = 0
 player.rect.y = Config.map.get_height()/6
 test_sprites = pygame.sprite.Group()
 test_sprites.add(test)

@@ -33,8 +33,8 @@ for m in maplines:
         x = 0
         y += 50
 
-background = pygame.image.load("./Images/sky.png")
-background = pygame.Surface.subsurface(background, (0, 5399, 10000, 1100))
+background = pygame.image.load("./Images/stars.png")
+background = pygame.Surface.subsurface(background, (0, 0, 10000, 1100))
 map.blit(background, (0, 0))
 cavebackground = pygame.image.load("./Images/cave.png")
 cavebackground = pygame.transform.scale(cavebackground, (map.get_width() - 6000,map.get_height() - 300))
