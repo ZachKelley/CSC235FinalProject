@@ -117,6 +117,7 @@ class laserflea(pygame.sprite.Sprite):
         self.rect.x = map.get_width() - 2000
         self.rect.y = map.get_height() - (map.get_height()/4)
         self.vel = 3
+        self.hitmask = pygame.mask.from_surface(self.image)
         self.shot = False
 
     def update(self):
@@ -225,6 +226,7 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.IDLELEFT
                 self.animation = self.animationdic[self.state]
                 self.image = self.animation[self.index]
+                self.rect = Rect(self.rect.x, self.rect.y, self.image.get_width(), self.image.get_height())
                 self.shot = False
 
         elif self.state == self.states.LASERRIGHT:
@@ -237,6 +239,7 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.IDLERIGHT
                 self.animation = self.animationdic[self.state]
                 self.image = self.animation[self.index]
+                self.rect = Rect(self.rect.x, self.rect.y, self.image.get_width(), self.image.get_height())
 
         if self.rect.x <= 0:
             self.rect.x = 0
@@ -250,22 +253,6 @@ class laserflea(pygame.sprite.Sprite):
                     if self.rect.bottom >= g.rect.top:
                         self.rect.bottom = g.rect.top
                         self.grounded = True
-
-            if self.facing == "right":
-                if g.rect.top - self.rect.height / 4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height / 4:
-                    if self.rect.right >= g.rect.left and (self.rect.right <= g.rect.left + 15):
-                        self.rect.right = g.rect.left
-                        self.vel = 0
-                elif g.rect.top < self.rect.bottom:
-                    self.vel = 3
-
-            if self.facing == "left":
-                if g.rect.top - self.rect.height / 4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height / 4:
-                    if g.rect.right >= self.rect.left and (self.rect.left >= g.rect.left - 15):
-                        self.rect.left = g.rect.right
-                        self.vel = 0
-                elif g.rect.top < self.rect.bottom:
-                    self.vel = 3
 
 
         self.counter += 1
@@ -296,6 +283,8 @@ class laserflea(pygame.sprite.Sprite):
             newimg.blit(self.laser, (30, newimg.get_height()/2 - 25))
             newimg.blit(self.image, (newimg.get_width() - self.image.get_width(), 0))
             self.image = newimg
+            self.rect = Rect(self.rect.x , self.rect.y, self.image.get_width(), self.image.get_height())
+            self.hitmask = pygame.mask.from_surface(self.image)
 
         elif self.state == self.states.LASERRIGHT:
             newimg = Surface(
@@ -304,3 +293,16 @@ class laserflea(pygame.sprite.Sprite):
             newimg.blit(self.laser, (self.image.get_width() - 30, newimg.get_height()/2 - 25))
             newimg.blit(self.image, (0, 0))
             self.image = newimg
+            self.rect = Rect(self.rect.x, self.rect.y, self.image.get_width(), self.image.get_height())
+            self.hitmask = pygame.mask.from_surface(self.image)
+
+        for p in player_sprite:
+            px = p.rect.x
+            py = p.rect.y
+            sx = self.rect.x
+            sy = self.rect.y
+
+            offset = (px - sx, py - sy)
+            result = self.hitmask.overlap(p.hitmask, offset)
+            if result:
+                print("hit")
