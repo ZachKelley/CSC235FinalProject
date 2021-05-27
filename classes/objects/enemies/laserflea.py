@@ -119,6 +119,7 @@ class laserflea(pygame.sprite.Sprite):
         self.vel = 3
         self.hitmask = pygame.mask.from_surface(self.image)
         self.shot = False
+        self.health = 100
 
     def update(self):
         self.animation = self.animationdic[self.state]
@@ -133,7 +134,7 @@ class laserflea(pygame.sprite.Sprite):
                 self.index += 1
                 self.counter = 0
         else:
-            if self.counter >= 2:
+            if self.counter >= 1:
                 self.index += 1
                 self.counter = 0
 
@@ -256,6 +257,41 @@ class laserflea(pygame.sprite.Sprite):
 
 
         self.counter += 1
+        if self.facing == "right":
+            pygame.draw.line(Config.map, Config.RED, (self.rect.x, self.rect.y - 10), (self.rect.x + 200, self.rect.y - 10),
+                             4)
+            pygame.draw.line(Config.map, Config.GREEN, (self.rect.x, self.rect.y - 10),
+                             (self.rect.x + ((self.health / 100) * 200), self.rect.y - 10), 4)
+        else:
+            pygame.draw.line(Config.map, Config.RED, (self.rect.x + self.rect.width - 200, self.rect.y - 10),
+                             (self.rect.x + self.rect.width, self.rect.y - 10),
+                             4)
+            pygame.draw.line(Config.map, Config.GREEN, (self.rect.x + self.rect.width - 200, self.rect.y - 10),
+                             (self.rect.x + self.rect.width - 200 + ((self.health / 100) * 200), self.rect.y - 10), 4)
+
+        for p in player_sprite:
+            for b in p.bullets:
+                bx = b.rect.x
+                by = b.rect.y
+                sx = self.rect.x
+                sy = self.rect.y
+
+                offset = (bx - sx, by - sy)
+                result = self.hitmask.overlap(b.hitmask, offset)
+                if result:
+                    if self.state != self.states.LASERLEFT or self.state != self.states.LASERRIGHT:
+                        if (self.rect.center[1] - 20) <= b.rect.center[1] <= (self.rect.center[1] + 20):
+                            if self.facing == "right":
+                                if self.rect.right < p.rect.x:
+                                    p.bullets.remove(b)
+                                    if self.health > 0:
+                                        self.health -= 5
+                            else:
+                                if self.rect.left > p.rect.x:
+                                    p.bullets.remove(b)
+                                    if self.health > 0:
+                                        self.health -= 5
+                    p.bullets.remove(b)
 
     def think(self):
         for p in player_sprite:
@@ -305,4 +341,5 @@ class laserflea(pygame.sprite.Sprite):
             offset = (px - sx, py - sy)
             result = self.hitmask.overlap(p.hitmask, offset)
             if result:
-                pass
+                if p.health > 0:
+                    p.damage(10)
