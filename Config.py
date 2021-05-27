@@ -33,6 +33,12 @@ for m in maplines:
         x = 0
         y += 50
 
+background = pygame.image.load("./Images/background.jpg")
+map.blit(background, (0, 0))
+cavebackground = pygame.image.load("./Images/cave.png")
+cavebackground = pygame.transform.scale(cavebackground, (map.get_width() - 6000,map.get_height() - 300))
+map.blit(cavebackground, (0, map.get_height()/5 + 20))
+map.blit(cavebackground, (4100, map.get_height()/2 - 20))
 ground_sprites.draw(map)
 pygame.image.save(map, "map1.png")
 
