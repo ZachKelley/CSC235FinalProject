@@ -4,7 +4,7 @@ import Config
 from Config import *
 from classes.menus.main_menu import main_menu
 
-current_menu = main_menu
+Config.current_menu = main_menu
 
 def main():
     running = True
@@ -31,7 +31,7 @@ def main():
 
         Config.map.convert_alpha()
         WIN.blit(Config.map, (-1 * Config.x, -1 * Config.y))
-        current_menu.run()
+        Config.current_menu.run()
 
         events = pygame.event.get()
         for event in events:
