@@ -305,4 +305,4 @@ class laserflea(pygame.sprite.Sprite):
             offset = (px - sx, py - sy)
             result = self.hitmask.overlap(p.hitmask, offset)
             if result:
-                print("hit")
+                pass

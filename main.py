@@ -24,17 +24,14 @@ def main():
             else:
                 if p.rect.x - WIN.get_width()/2 > 0:
                     Config.x = p.rect.x - WIN.get_width()/2
-            if Config.y > 0:
-                Config.y = p.rect.y - Config.HEIGHT/2
-                if Config.y + Config.HEIGHT/2 < Config.map.get_height():
-                    Config.y = p.rect.y - Config.map.get_height() / 2
+
+            if p.rect.y - HEIGHT/2 > 0:
+                if p.rect.y + Config.HEIGHT/2 < Config.map.get_height():
+                    Config.y = p.rect.y - Config.HEIGHT/2
+                elif p.rect.y + Config.HEIGHT / 2 > Config.map.get_height():
+                    Config.y = Config.map.get_height() - HEIGHT
                 else:
-                    Config.y = p.rect.y - (Config.map.get_height() - (Config.map.get_height() - p.rect.bottom))
-            else:
-                if p.rect.y - WIN.get_height()/2 > 0:
-                    Config.y = p.rect.y - Config.map.get_height() / 2
-                else:
-                    Config.y = p.rect.y - (0 + p.rect.y)
+                    Config.y = 0
 
         Config.map.convert_alpha()
         WIN.blit(Config.map, (-1 * Config.x, -1 * Config.y))
