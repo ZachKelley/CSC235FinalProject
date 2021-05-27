@@ -5,28 +5,31 @@ from pygame import *
 from Images.Tiles.ground import ground
 
 pygame.init()
-map = Surface((10000,750))
+map = Surface((10000, 1500))
 map.fill((255, 255, 255))
 
 ground_sprites = pygame.sprite.Group()
 
-maplines = open('map')
-maplines = maplines.read()
+maplines = open('map.txt')
+maplines = maplines.readline()
+maplines = maplines.split(',')
+
+
 x = 0
 y = 0
 for m in maplines:
-    if m == 'g':
+    if m == '1':
         g = ground("top")
         g.rect.x = x
         g.rect.y = y
         ground_sprites.add(g)
-    if m == 'u':
+    if m == '2':
         g = ground("under")
         g.rect.x = x
         g.rect.y = y
         ground_sprites.add(g)
     x += 100
-    if m == '\n':
+    if x == 10000:
         x = 0
         y += 50
 
@@ -44,6 +47,7 @@ FPS = 60
 clock = pygame.time.Clock()
 
 current_menu = None
+player_sprite = pygame.sprite.Group()
 
 # colors
 BLACK = (0, 0, 0)

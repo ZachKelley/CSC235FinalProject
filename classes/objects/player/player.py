@@ -135,26 +135,30 @@ class Player(pygame.sprite.Sprite):
 
         self.grounded = False
         for g in ground_sprites:
-            if g.rect.left < self.rect.x < g.rect.right or (g.rect.left < self.rect.right < g.rect.right):
-                if self.rect.bottom >= g.rect.top:
-                    self.rect.bottom = g.rect.top
-                    self.grounded = True
+            if self.rect.bottom <= g.rect.top + 15:
+                if g.rect.left < self.rect.x < g.rect.right or (g.rect.left < self.rect.right < g.rect.right):
+                    if self.rect.bottom >= g.rect.top:
+                        self.rect.bottom = g.rect.top
+                        self.grounded = True
 
-        for g in ground_sprites:
+            if self.state == self.states.RUNRIGHT:
+                if g.rect.top - self.rect.height/4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height/4:
+                    print(self.rect.right)
+                    print(g.rect.left)
+                    print("_____")
+                    if self.rect.right >= g.rect.left and (self.rect.right <= g.rect.left + 15):
+                        self.rect.right = g.rect.left
+                        self.vel = 0
+                elif g.rect.top < self.rect.bottom:
+                    self.vel = 10
+
             if self.state == self.states.RUNLEFT:
-                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
-                    if g.rect.right == self.rect.left:
+                if g.rect.top - self.rect.height/4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height/4:
+                    if g.rect.right >= self.rect.left and (self.rect.left >= g.rect.left - 15):
+                        self.rect.left = g.rect.right
                         self.vel = 0
                 elif g.rect.top < self.rect.bottom:
                     self.vel = 10
-            elif self.state == self.states.RUNRIGHT:
-                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
-                    if g.rect.left == self.rect.right:
-                        self.vel = 0
-                elif g.rect.top < self.rect.bottom:
-                    self.vel = 10
-            else:
-                self.vel = 10
 
 
         if self.jumping:

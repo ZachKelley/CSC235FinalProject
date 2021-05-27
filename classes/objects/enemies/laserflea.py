@@ -23,6 +23,7 @@ class laserflea(pygame.sprite.Sprite):
     # constants
     counter = 0
     shootcounter = 0
+    walklooper = 0
 
     # images
     idle = pygame.image.load("./Images/enemies/laser-flea/idle_change_direction.png").convert_alpha()
@@ -76,7 +77,7 @@ class laserflea(pygame.sprite.Sprite):
     laser.build()
     laser = laser.animation[5:6]
     laser = laser[0]
-    laser = pygame.transform.scale(laser, (laser.get_width(), 30)).convert_alpha()
+    laser = pygame.transform.scale(laser, (laser.get_width(), 50)).convert_alpha()
     i = pygame.Surface((100, 64)).convert_alpha()
     i.fill((0, 0, 0, 0))
     i.blit(laser, (0 - 500, 0))
@@ -113,30 +114,44 @@ class laserflea(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
         self.rect.center = (self.image.get_width()/2, self.image.get_height()/2)
-        self.rect.x = Config.WIDTH/2
-        self.rect.y = Config.HEIGHT/2
+        self.rect.x = Config.map.get_width()/2
+        self.rect.y = Config.map.get_height()/2
+        self.vel = 3
+        self.shot = False
 
     def update(self):
         self.animation = self.animationdic[self.state]
+        self.think()
 
-        if self.counter >= 2:
-            self.index += 1
-            self.counter = 0
+        if self.state == self.states.LASERLEFT or self.state == self.states.LASERRIGHT:
+            if self.counter >= 1:
+                self.index += 1
+                self.counter = 0
+        elif self.state == self.states.IDLELEFT or self.state == self.states.IDLERIGHT or self.state == self.states.IDLELTOR or self.state == self.states.IDLERTOL:
+            if self.counter >= 1:
+                self.index += 1
+                self.counter = 0
+        else:
+            if self.counter >= 2:
+                self.index += 1
+                self.counter = 0
 
         if self.state == self.states.IDLELEFT:
             self.image = self.animation[self.index]
             self.facing = "left"
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.IDLELTOR
+                self.state = self.states.WALKLEFT
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.IDLERIGHT:
             self.image = self.animation[self.index]
             self.facing = "right"
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.IDLERTOL
+                self.state = self.states.WALKRIGHT
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.IDLELTOR:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
@@ -144,6 +159,7 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.IDLERIGHT
                 self.facing = "right"
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.IDLERTOL:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
@@ -151,22 +167,33 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.IDLELEFT
                 self.facing = "left"
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.WALKLEFT:
             self.image = self.animation[self.index]
-            self.rect.x -= 3
+            self.rect.x -= self.vel
             self.facing = "left"
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.WALKLTOR
-                self.animation = self.animationdic[self.state]
+                if self.walklooper > 10:
+                    self.walklooper = 0
+                    self.state = self.states.WALKLTOR
+                    self.animation = self.animationdic[self.state]
+                    self.image = self.animation[self.index]
+                else:
+                    self.walklooper += 1
         elif self.state == self.states.WALKRIGHT:
             self.image = self.animation[self.index]
-            self.rect.x += 3
+            self.rect.x += self.vel
             self.facing = "right"
             if self.index == len(self.animation) - 1:
                 self.index = 0
-                self.state = self.states.WALKRTOL
-                self.animation = self.animationdic[self.state]
+                if self.walklooper > 10:
+                    self.walklooper = 0
+                    self.state = self.states.WALKRTOL
+                    self.animation = self.animationdic[self.state]
+                    self.image = self.animation[self.index]
+                else:
+                    self.walklooper += 1
         elif self.state == self.states.WALKLTOR:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
@@ -174,6 +201,7 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.WALKRIGHT
                 self.facing = "right"
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.WALKRTOL:
             self.image = self.animation[self.index]
             if self.index == len(self.animation) - 1:
@@ -181,49 +209,91 @@ class laserflea(pygame.sprite.Sprite):
                 self.state = self.states.WALKLEFT
                 self.facing = "left"
                 self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
         elif self.state == self.states.LASERLEFT:
             self.image = self.animation[self.index]
+            self.facing = "left"
+            if not self.shot:
+                if self.index >= len(self.animation) - 8:
+                    self.shot = True
+                    self.rect.x -= 1500
             if self.index >= len(self.animation) - 8:
-                self.shootlaser("left")
+                self.shootlaser()
             if self.index == len(self.animation) - 1:
                 self.index = 0
+                self.state = self.states.IDLELEFT
+                self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
+                self.rect.x += 1500
+                self.shot = False
+
         elif self.state == self.states.LASERRIGHT:
+            self.facing = "right"
             self.image = self.animation[self.index]
             if self.index >= len(self.animation) - 8:
-                self.shootlaser("right")
+                self.shootlaser()
             if self.index == len(self.animation) - 1:
                 self.index = 0
-
+                self.state = self.states.IDLERIGHT
+                self.animation = self.animationdic[self.state]
+                self.image = self.animation[self.index]
 
         self.grounded = False
         for g in ground_sprites:
-            if g.rect.left < self.rect.left < g.rect.right or g.rect.left < self.rect.right < g.rect.right:
+            if g.rect.left < self.rect.x < g.rect.right or (g.rect.left < self.rect.right < g.rect.right):
                 if self.rect.bottom >= g.rect.top:
-                    self.rect.bottom = g.rect.top
+                    self.rect.bottom = g.rect.top + 10
                     self.grounded = True
-            if self.facing == "left":
-                if g.rect.right >= self.rect.left:
-                    self.rect.left = g.rect.right
-        self.rect.y += 15
+
+        for g in ground_sprites:
+            if self.state == self.states.WALKLEFT:
+                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
+                    if g.rect.right == self.rect.left:
+                        self.vel = 0
+                elif g.rect.top < self.rect.bottom:
+                    self.vel = 3
+            elif self.state == self.states.WALKRIGHT:
+                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
+                    if g.rect.left == self.rect.right:
+                        self.vel = 0
+                elif g.rect.top < self.rect.bottom:
+                    self.vel = 3
+            else:
+                self.vel = 3
 
 
         pygame.draw.rect(Config.map, Config.RED, self.rect, 2)
         self.counter += 1
 
-    def shootlaser(self, dir):
+    def think(self):
+        for p in player_sprite:
+            if self.facing == "left":
+                if self.state != self.states.LASERLEFT:
+                    if self.rect.left - WIDTH/2 + 200 <= p.rect.right <= self.rect.left:
+                        self.state = self.states.LASERLEFT
+                        self.animation = self.animationdic[self.state]
+                        self.index = 0
+            else:
+                if self.state != self.states.LASERRIGHT:
+                    if self.rect.right <= p.rect.left <= self.rect.right + WIDTH/2 - 100:
+                        self.state = self.states.LASERRIGHT
+                        self.animation = self.animationdic[self.state]
+                        self.index = 0
 
-        if dir == "left":
+    def shootlaser(self):
+
+        if self.state == self.states.LASERLEFT:
             newimg = Surface(
                 ((self.laser.get_width() + self.image.get_width()), self.image.get_height())).convert_alpha()
             newimg.fill((0, 0, 0, 0))
-            newimg.blit(self.laser, (10, 15))
+            newimg.blit(self.laser, (30, newimg.get_height()/2 - 25))
             newimg.blit(self.image, (newimg.get_width() - self.image.get_width(), 0))
-            self.rect.right = self.rect.x + 200
             self.image = newimg
-        else:
+
+        elif self.state == self.states.LASERRIGHT:
             newimg = Surface(
                 ((self.laser.get_width() + self.image.get_width()), self.image.get_height())).convert_alpha()
             newimg.fill((0, 0, 0, 0))
-            newimg.blit(self.laser, (self.image.get_width() - 10, 15))
+            newimg.blit(self.laser, (self.image.get_width() - 30, newimg.get_height()/2 - 25))
             newimg.blit(self.image, (0, 0))
             self.image = newimg
