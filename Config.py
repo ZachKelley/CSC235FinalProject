@@ -33,7 +33,7 @@ for m in maplines:
         x = 0
         y += 50
 
-background = pygame.image.load("./Images/stars.png")
+background = pygame.image.load("./Images/moon.png")
 background = pygame.Surface.subsurface(background, (0, 0, 10000, 1100))
 map.blit(background, (0, 0))
 cavebackground = pygame.image.load("./Images/cave.png")
