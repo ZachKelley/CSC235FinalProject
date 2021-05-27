@@ -114,8 +114,8 @@ class laserflea(pygame.sprite.Sprite):
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
         self.rect.center = (self.image.get_width()/2, self.image.get_height()/2)
-        self.rect.x = Config.map.get_width()/2
-        self.rect.y = Config.map.get_height()/2
+        self.rect.x = map.get_width() - 2000
+        self.rect.y = map.get_height() - (map.get_height()/4)
         self.vel = 3
         self.shot = False
 
@@ -220,11 +220,11 @@ class laserflea(pygame.sprite.Sprite):
             if self.index >= len(self.animation) - 8:
                 self.shootlaser()
             if self.index == len(self.animation) - 1:
+                self.rect.x += 1500
                 self.index = 0
                 self.state = self.states.IDLELEFT
                 self.animation = self.animationdic[self.state]
                 self.image = self.animation[self.index]
-                self.rect.x += 1500
                 self.shot = False
 
         elif self.state == self.states.LASERRIGHT:
@@ -238,47 +238,54 @@ class laserflea(pygame.sprite.Sprite):
                 self.animation = self.animationdic[self.state]
                 self.image = self.animation[self.index]
 
+        if self.rect.x <= 0:
+            self.rect.x = 0
+        if self.rect.right >= Config.map.get_width():
+            self.rect.right = Config.map.get_width()
+
         self.grounded = False
         for g in ground_sprites:
-            if g.rect.left < self.rect.x < g.rect.right or (g.rect.left < self.rect.right < g.rect.right):
-                if self.rect.bottom >= g.rect.top:
-                    self.rect.bottom = g.rect.top + 10
-                    self.grounded = True
+            if self.rect.bottom <= g.rect.top + 15:
+                if g.rect.left < self.rect.x < g.rect.right or (g.rect.left < self.rect.right < g.rect.right):
+                    if self.rect.bottom >= g.rect.top:
+                        self.rect.bottom = g.rect.top
+                        self.grounded = True
 
-        for g in ground_sprites:
-            if self.state == self.states.WALKLEFT:
-                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
-                    if g.rect.right == self.rect.left:
+            if self.facing == "right":
+                if g.rect.top - self.rect.height / 4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height / 4:
+                    if self.rect.right >= g.rect.left and (self.rect.right <= g.rect.left + 15):
+                        self.rect.right = g.rect.left
                         self.vel = 0
                 elif g.rect.top < self.rect.bottom:
                     self.vel = 3
-            elif self.state == self.states.WALKRIGHT:
-                if g.rect.top <= self.rect.center[1] <= g.rect.bottom:
-                    if g.rect.left == self.rect.right:
+
+            if self.facing == "left":
+                if g.rect.top - self.rect.height / 4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height / 4:
+                    if g.rect.right >= self.rect.left and (self.rect.left >= g.rect.left - 15):
+                        self.rect.left = g.rect.right
                         self.vel = 0
                 elif g.rect.top < self.rect.bottom:
                     self.vel = 3
-            else:
-                self.vel = 3
 
 
-        pygame.draw.rect(Config.map, Config.RED, self.rect, 2)
         self.counter += 1
 
     def think(self):
         for p in player_sprite:
-            if self.facing == "left":
+            if self.state == self.states.WALKLEFT or self.state == self.states.IDLELEFT:
                 if self.state != self.states.LASERLEFT:
-                    if self.rect.left - WIDTH/2 + 200 <= p.rect.right <= self.rect.left:
-                        self.state = self.states.LASERLEFT
-                        self.animation = self.animationdic[self.state]
-                        self.index = 0
-            else:
+                    if self.rect.y <= p.rect.top and (self.rect.bottom >= p.rect.bottom):
+                        if self.rect.left - WIDTH/2 + 200 <= p.rect.right <= self.rect.left:
+                            self.state = self.states.LASERLEFT
+                            self.animation = self.animationdic[self.state]
+                            self.index = 0
+            elif self.state == self.states.WALKRIGHT or self.state == self.states.IDLERIGHT:
                 if self.state != self.states.LASERRIGHT:
-                    if self.rect.right <= p.rect.left <= self.rect.right + WIDTH/2 - 100:
-                        self.state = self.states.LASERRIGHT
-                        self.animation = self.animationdic[self.state]
-                        self.index = 0
+                    if self.rect.y <= p.rect.top and (self.rect.bottom >= p.rect.bottom):
+                        if self.rect.right <= p.rect.left <= self.rect.right + WIDTH/2 - 100:
+                            self.state = self.states.LASERRIGHT
+                            self.animation = self.animationdic[self.state]
+                            self.index = 0
 
     def shootlaser(self):
 
