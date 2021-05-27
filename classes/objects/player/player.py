@@ -143,9 +143,6 @@ class Player(pygame.sprite.Sprite):
 
             if self.state == self.states.RUNRIGHT:
                 if g.rect.top - self.rect.height/4 <= self.rect.center[1] <= g.rect.bottom + self.rect.height/4:
-                    print(self.rect.right)
-                    print(g.rect.left)
-                    print("_____")
                     if self.rect.right >= g.rect.left and (self.rect.right <= g.rect.left + 15):
                         self.rect.right = g.rect.left
                         self.vel = 0

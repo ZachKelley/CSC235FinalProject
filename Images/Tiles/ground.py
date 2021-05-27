@@ -5,7 +5,7 @@ class ground(pygame.sprite.Sprite):
     def __init__(self, type):
         pygame.sprite.Sprite.__init__(self)
         if type == "top":
-            self.image = pygame.image.load("./groundTILE.png")
+            self.image = pygame.image.load("./Images/Tiles/groundTILE.png")
             self.image = pygame.transform.scale(self.image, (100,50))
         else:
             self.dirt = Surface((100,50))
