@@ -1,3 +1,5 @@
+import sys
+
 import pygame.sprite
 from pygame.mixer import Sound
 
@@ -94,7 +96,6 @@ objective_sprites.add(reactor)
 font = pygame.font.Font("./OpenSans-Bold.ttf", 16)
 
 music = Sound("./Sounds/backgroundsound.mp3")
-music.set_volume(.2)
 
 def run():
     global gears, reactors, music
@@ -141,4 +142,3 @@ def run():
     player_sprite.update()
     objective_sprites.update()
     lasers.update()
-

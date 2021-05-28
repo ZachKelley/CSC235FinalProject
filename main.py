@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 from pygame import *
 from pygame.mixer import Sound
@@ -44,6 +46,7 @@ def main():
                 running = False
 
     pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
     main()
