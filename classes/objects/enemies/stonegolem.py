@@ -202,7 +202,6 @@ class stonegolem(pygame.sprite.Sprite):
         self.hitcounter += 1
         self.counter += 1
 
-        pygame.draw.rect(Config.map, Config.RED, self.rect, 2)
         pygame.draw.line(Config.map, Config.RED, (self.rect.x, self.rect.y - 10), (self.rect.right, self.rect.y - 10),
                          4)
         pygame.draw.line(Config.map, Config.GREEN, (self.rect.x, self.rect.y - 10),
