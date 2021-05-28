@@ -59,6 +59,7 @@ current_menu = None
 player_sprite = pygame.sprite.Group()
 test_sprites = pygame.sprite.Group()
 objective_sprites = pygame.sprite.Group()
+lasers = pygame.sprite.Group()
 
 # colors
 BLACK = (0, 0, 0)
