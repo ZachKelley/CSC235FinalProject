@@ -1,3 +1,5 @@
+from pygame.mixer import Sound
+
 import Config
 from Config import *
 from classes.menus.game import game
@@ -10,9 +12,13 @@ bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 counter = 0
 started = False
 
+sound = Sound("./Sounds/mainmenusound.mp3")
+
 
 def run():
-    global counter, started
+    global counter, started, sound
+    if not pygame.mixer.get_busy():
+        sound.play()
     if not started:
         keys = pygame.key.get_pressed()
         if keys.__contains__(1):
@@ -64,5 +70,6 @@ def run():
         else:
             keys = pygame.key.get_pressed()
             if keys.__contains__(1):
+                sound.stop()
                 Config.current_menu = game
 

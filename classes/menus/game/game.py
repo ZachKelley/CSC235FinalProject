@@ -1,4 +1,5 @@
 import pygame.sprite
+from pygame.mixer import Sound
 
 import Config
 import died
@@ -92,8 +93,13 @@ objective_sprites.add(reactor)
 
 font = pygame.font.Font("./OpenSans-Bold.ttf", 16)
 
+music = Sound("./Sounds/backgroundsound.mp3")
+music.set_volume(.2)
+
 def run():
-    global gears, reactors
+    global gears, reactors, music
+    if not pygame.mixer.get_busy():
+        music.play()
     Config.map = pygame.transform.flip(map, False, False)
     geartxt = font.render("gears: " + repr(gears) + " / 5", True, (255, 255, 255))
     reactortxt = font.render("reactor: " + repr(reactors) + " / 1", True, (255, 255, 255))

@@ -6,16 +6,12 @@ import Config
 from Config import *
 from classes.menus.main_menu import main_menu
 
-music = Sound("./Sounds/backgroundsound.mp3")
-music.set_volume(.2)
-
 Config.current_menu = main_menu
 
 def main():
     running = True
 
     while running:
-        music.play()
         clock.tick(FPS)
         for p in main_menu.player_sprite:
             if Config.x > 0:
