@@ -8,7 +8,6 @@ Config.current_menu = main_menu
 
 def main():
     running = True
-    Config.map.convert_alpha()
 
     while running:
         clock.tick(FPS)
@@ -43,8 +42,6 @@ def main():
                 running = False
 
     pygame.quit()
-
-
 
 if __name__ == "__main__":
     main()

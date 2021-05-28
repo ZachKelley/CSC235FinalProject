@@ -22,7 +22,7 @@ class poisonchomper(pygame.sprite.Sprite):
     counter = 0
     shootcounter = 0
 
-    idle = pygame.image.load("./Images/enemies/poison-chomper/idle.png")
+    idle = pygame.image.load("./Images/enemies/poison-chomper/idle.png").convert_alpha()
     idleleft = Animation(idle, 175, 119)
     idleleft.scalefactor = 32
     idleleft.build()
@@ -33,7 +33,7 @@ class poisonchomper(pygame.sprite.Sprite):
     idleright = idleright.animation
 
 
-    jump = pygame.image.load("./Images/enemies/poison-chomper/jump-cycle.png")
+    jump = pygame.image.load("./Images/enemies/poison-chomper/jump-cycle.png").convert_alpha()
     jumpleft = Animation(jump, 304, 246, num=1)
     jumpleft.build()
     jumpleft = jumpleft.animation
@@ -169,6 +169,9 @@ class poisonchomper(pygame.sprite.Sprite):
                          4)
         pygame.draw.line(Config.map, Config.GREEN, (self.rect.x, self.rect.y - 10),
                          (self.rect.x + ((self.health / 50) * self.rect.width), self.rect.y - 10), 4)
+
+        if self.health <= 0:
+            test_sprites.remove(self)
 
 
         self.counter += 1

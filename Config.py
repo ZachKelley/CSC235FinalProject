@@ -57,6 +57,7 @@ clock = pygame.time.Clock()
 
 current_menu = None
 player_sprite = pygame.sprite.Group()
+test_sprites = pygame.sprite.Group()
 
 # colors
 BLACK = (0, 0, 0)

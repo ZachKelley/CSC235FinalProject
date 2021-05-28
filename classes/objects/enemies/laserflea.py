@@ -293,6 +293,9 @@ class laserflea(pygame.sprite.Sprite):
                                         self.health -= 5
                     p.bullets.remove(b)
 
+        if self.health <= 0:
+            test_sprites.remove(self)
+
     def think(self):
         for p in player_sprite:
             if self.state == self.states.WALKLEFT or self.state == self.states.IDLELEFT:

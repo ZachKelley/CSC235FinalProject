@@ -230,7 +230,8 @@ class Player(pygame.sprite.Sprite):
             if b.counter > 50:
                 self.bullets.remove(b)
 
-
+        if self.health <= 0:
+            player_sprite.remove(self)
 
     def damage(self, num):
         self.health -= num
