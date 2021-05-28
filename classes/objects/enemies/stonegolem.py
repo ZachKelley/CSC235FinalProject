@@ -2,6 +2,7 @@ import pygame.sprite
 import Config
 from Config import *
 from Images.Animations.Animation import Animation
+from classes.objects.enemies.golemlaser import golemlaser
 
 
 class stonegolem(pygame.sprite.Sprite):
@@ -56,9 +57,12 @@ class stonegolem(pygame.sprite.Sprite):
 
     counter = 0
     hitcounter = 0
+    lasercounter = 0
+    lasers = pygame.sprite.Group()
 
     def __init__(self, direction):
         pygame.sprite.Sprite.__init__(self)
+        self.shooting = False
         self.grounded = True
         self.dead = False
         if direction == "right":
@@ -124,15 +128,21 @@ class stonegolem(pygame.sprite.Sprite):
             if self.index == len(self.animation) - 1:
                 self.index = 0
         elif self.state == self.states.SHOOTLEFT:
+            self.shooting = True
             self.image = self.animation[self.index]
             self.facing = "left"
+            laser = golemlaser(self.rect.x, self.rect.y , "left")
             if self.index == len(self.animation) - 1:
                 self.index = 0
+                self.lasers.add(laser)
         elif self.state == self.states.SHOOTRIGHT:
+            self.shooting = True
             self.image = self.animation[self.index]
             self.facing = "right"
+            laser = golemlaser(self.rect.x + self.rect.right, self.rect.center[1], "right")
             if self.index == len(self.animation) - 1:
                 self.index = 0
+                self.lasers.add(laser)
         elif self.state == self.states.DEATHLEFT:
             self.image = self.animation[self.index]
             self.facing = "left"
@@ -179,18 +189,6 @@ class stonegolem(pygame.sprite.Sprite):
             self.rect.y += 10
 
         for p in player_sprite:
-            px = p.rect.x
-            py = p.rect.y
-            sx = self.rect.x
-            sy = self.rect.y
-
-            offset = (px - sx, py - sy)
-            result = self.hitmask.overlap(p.hitmask, offset)
-            if result:
-                if self.hitcounter > 10:
-                    if p.health > 0:
-                        p.damage(3)
-                    self.hitcounter = 0
             for b in p.bullets:
                 bx = b.rect.x
                 by = b.rect.y
@@ -214,6 +212,14 @@ class stonegolem(pygame.sprite.Sprite):
         self.hitcounter += 1
         self.counter += 1
 
+        if self.lasers:
+            if self.lasercounter > 10:
+                self.shooting = False
+                self.lasercounter = 0
+                self.lasers.empty()
+            self.lasers.draw(Config.map)
+            self.lasercounter += 1
+
         pygame.draw.line(Config.map, Config.RED, (self.rect.x, self.rect.y - 10), (self.rect.right, self.rect.y - 10),
                          4)
         pygame.draw.line(Config.map, Config.GREEN, (self.rect.x, self.rect.y - 10),
@@ -223,12 +229,14 @@ class stonegolem(pygame.sprite.Sprite):
         if self.state != self.states.DEATHRIGHT and self.state != self.states.DEATHLEFT:
             for p in player_sprite:
                 if self.rect.x - 50 <= p.rect.right <= self.rect.x:
-                    self.state = self.states.SHOOTLEFT
-                    self.index = 0
+                    if not self.shooting:
+                        self.state = self.states.SHOOTLEFT
+                        self.index = 0
 
                 elif self.rect.right <= p.rect.x <= self.rect.right + 50:
-                    self.state = self.states.SHOOTRIGHT
-                    self.index = 0
+                    if not self.shooting:
+                        self.state = self.states.SHOOTRIGHT
+                        self.index = 0
 
                 elif self.rect.x - 2000 <= p.rect.x <= self.rect.x - 150:
                     if p.facing == "left":

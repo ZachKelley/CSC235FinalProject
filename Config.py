@@ -52,7 +52,7 @@ x = 0
 y = 0
 
 pygame.display.set_caption("Eduardo's Journey")
-FPS = 60
+FPS = 30
 clock = pygame.time.Clock()
 
 current_menu = None
