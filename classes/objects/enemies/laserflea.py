@@ -99,6 +99,8 @@ class laserflea(pygame.sprite.Sprite):
 
     def __init__(self, direction):
         pygame.sprite.Sprite.__init__(self)
+        self.dead = False
+        self.grounded = True
         if direction == "right":
             self.state = self.states.WALKRIGHT
             self.animation = self.animationdic[self.state]
@@ -294,7 +296,7 @@ class laserflea(pygame.sprite.Sprite):
                     p.bullets.remove(b)
 
         if self.health <= 0:
-            test_sprites.remove(self)
+            self.dead = True
 
     def think(self):
         for p in player_sprite:

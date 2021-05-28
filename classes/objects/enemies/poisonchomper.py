@@ -55,6 +55,7 @@ class poisonchomper(pygame.sprite.Sprite):
     def __init__(self, direction):
         pygame.sprite.Sprite.__init__(self)
         self.grounded = True
+        self.dead = False
         if direction == "right":
             self.state = self.states.IDLERIGHT
             self.animation = self.animationdic[self.state]
@@ -171,7 +172,7 @@ class poisonchomper(pygame.sprite.Sprite):
                          (self.rect.x + ((self.health / 50) * self.rect.width), self.rect.y - 10), 4)
 
         if self.health <= 0:
-            test_sprites.remove(self)
+            self.dead = True
 
 
         self.counter += 1

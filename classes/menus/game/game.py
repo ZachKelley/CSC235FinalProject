@@ -68,6 +68,11 @@ def run():
         if p.health <= 0:
             player_sprite.remove(p)
             Config.current_menu = died
+
+    for t in test_sprites:
+        if t.dead:
+            test_sprites.remove(t)
+
     player_sprite.draw(Config.map)
     test_sprites.draw(Config.map)
 
