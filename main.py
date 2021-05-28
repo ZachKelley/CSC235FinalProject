@@ -5,9 +5,9 @@ from pygame.mixer import Sound
 import Config
 from Config import *
 from classes.menus.main_menu import main_menu
-pygame.mixer.init()
 
 music = Sound("./backgroundsound.mp3")
+music.set_volume(.2)
 
 Config.current_menu = main_menu
 

@@ -5,6 +5,12 @@ from pygame import *
 from Images.Tiles.ground import ground
 
 pygame.init()
+pygame.mixer.init()
+#mixer channels
+channel1 = pygame.mixer.Channel(0)
+channel2 = pygame.mixer.Channel(1)
+channel3 = pygame.mixer.Channel(2)
+
 map = Surface((10000, 1500))
 map.fill((255, 255, 255))
 

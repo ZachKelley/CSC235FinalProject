@@ -1,22 +1,20 @@
 import sys
 
+import pygame
 from pygame.mixer import Sound
-
 import Config
 from Config import *
-from main import main
 
 pygame.init()
 pygame.font.init()
 
-pygame.mixer.init()
 death = Sound("./deathsound.mp3")
 
 bg = pygame.image.load("./backgroundSpace.png")
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 
-death.play()
 def run():
+    death.play()
 
     WIN.blit(bg, (0,0))
     font = pygame.font.Font("./OpenSans-Bold.ttf", 36)

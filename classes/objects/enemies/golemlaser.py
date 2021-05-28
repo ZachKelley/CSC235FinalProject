@@ -16,7 +16,6 @@ class golemlaser(pygame.sprite.Sprite):
     laserleft.build()
     laserleft = laserleft.animation
     laserright = Animation(laser, 300, 100)
-    laserright.scalefactor = 33
     laserright.build()
     laserright = laserright.animation
 
@@ -32,10 +31,8 @@ class golemlaser(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.center = (self.image.get_width()/2, self.image.get_height()/2)
-        if dir == "left":
-            self.rect.x = x - self.rect.width + 30
-        else:
-            self.rect.x = x
+
+        self.rect.x = x - self.rect.width + 30
         self.rect.y = y
         self.hitmask = pygame.mask.from_surface(self.image)
 

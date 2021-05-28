@@ -6,9 +6,7 @@ import died
 from Config import *
 from Images.Animations.Animation import Animation
 from classes.objects.player.playerbullet import playerbullet
-pygame.mixer.init()
 
-shooting = Sound("./gunsound.mp3")
 
 class Player(pygame.sprite.Sprite):
     class states():
@@ -27,6 +25,7 @@ class Player(pygame.sprite.Sprite):
     counter = 0
     shootcounter = 0
     jumpcounter = 30
+    fire = Sound("./gunsound.mp3")
 
     # images
     idle = pygame.image.load(
@@ -176,8 +175,8 @@ class Player(pygame.sprite.Sprite):
             for event in events:
                 if event.type == KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        shooting.play()
                         if self.state != self.states.SHOOTLEFT and self.state != self.states.SHOOTRIGHT:
+                            channel2.play(self.fire)
                             if self.facing == "left":
                                 self.state = self.states.SHOOTLEFT
                                 self.index = 0

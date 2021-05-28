@@ -139,7 +139,7 @@ class stonegolem(pygame.sprite.Sprite):
             self.shooting = True
             self.image = self.animation[self.index]
             self.facing = "right"
-            laser = golemlaser(self.rect.x + self.rect.right, self.rect.center[1], "right")
+            laser = golemlaser(self.rect.x + self.rect.width, self.rect.y, "right")
             if self.index == len(self.animation) - 1:
                 self.index = 0
                 Config.lasers.add(laser)
@@ -175,6 +175,7 @@ class stonegolem(pygame.sprite.Sprite):
                     if self.rect.right >= g.rect.left and (self.rect.right <= g.rect.left + 15):
                         self.rect.right = g.rect.left
                         self.vel = 0
+                        self.rect.y -= 15
                 elif g.rect.top < self.rect.bottom:
                     self.vel = 5
 
@@ -183,6 +184,7 @@ class stonegolem(pygame.sprite.Sprite):
                     if g.rect.right >= self.rect.left and (self.rect.left >= g.rect.left - 15):
                         self.rect.left = g.rect.right
                         self.vel = 0
+                        self.rect.y -= 15
                 elif g.rect.top < self.rect.bottom:
                     self.vel = 5
 
@@ -202,13 +204,16 @@ class stonegolem(pygame.sprite.Sprite):
                     p.bullets.remove(b)
                     if self.health > 0:
                         if self.state != self.states.IMMUNERIGHT and self.state != self.states.IMMUNELEFT:
-                            self.health -= 5
+                            if self.state != self.states.SHOOTLEFT and self.state != self.states.SHOOTRIGHT:
+                                self.health -= 5
         if self.health <= 0:
-            if not self.dead:
+            if self.state != self.states.DEATHLEFT and self.state != self.states.DEATHRIGHT:
                 if self.facing == "left":
                     self.state = self.states.DEATHLEFT
+                    self.index = 0
                 else:
                     self.state = self.states.DEATHRIGHT
+                    self.index = 0
 
         self.hitcounter += 1
         self.counter += 1
@@ -220,31 +225,30 @@ class stonegolem(pygame.sprite.Sprite):
                          (self.rect.x + ((self.health / 25) * self.rect.width), self.rect.y - 10), 4)
 
     def think(self):
-        if self.state != self.states.DEATHRIGHT and self.state != self.states.DEATHLEFT:
-            for p in player_sprite:
-                if self.rect.x - 50 <= p.rect.right <= self.rect.x:
-                    if not self.shooting:
+        if not self.shooting:
+            if self.state != self.states.DEATHRIGHT and self.state != self.states.DEATHLEFT:
+                for p in player_sprite:
+                    if self.rect.x - 50 <= p.rect.right <= self.rect.x:
                         self.state = self.states.SHOOTLEFT
                         self.index = 0
 
-                elif self.rect.right <= p.rect.x <= self.rect.right + 50:
-                    if not self.shooting:
+                    elif self.rect.right <= p.rect.x <= self.rect.right + 50:
                         self.state = self.states.SHOOTRIGHT
                         self.index = 0
 
-                elif self.rect.x - 2000 <= p.rect.x <= self.rect.x - 150:
-                    if p.facing == "left":
-                        if self.rect.x - 300 <= p.rect.x <= self.rect.x - 150:
-                            self.state = self.states.MOVELEFT
+                    elif self.rect.x - 2000 <= p.rect.x <= self.rect.x - 150:
+                        if p.facing == "left":
+                            if self.rect.x - 300 <= p.rect.x <= self.rect.x - p.rect.width:
+                                self.state = self.states.MOVELEFT
+                                self.index = 0
+                        elif p.facing == "right":
+                            self.state = self.states.IMMUNELEFT
                             self.index = 0
-                    elif p.facing == "right":
-                        self.state = self.states.IMMUNELEFT
-                        self.index = 0
-                elif self.rect.right + 50 <= p.rect.x <= self.rect.right + 2000:
-                    if p.facing == "right":
-                        if self.rect.right + 50 <= p.rect.x <= self.rect.right + 300:
-                            self.state = self.states.MOVERIGHT
+                    elif self.rect.right + 50 <= p.rect.x <= self.rect.right + 2000:
+                        if p.facing == "right":
+                            if self.rect.right <= p.rect.x <= self.rect.right + 300 + p.rect.width:
+                                self.state = self.states.MOVERIGHT
+                                self.index = 0
+                        elif p.facing == "left":
+                            self.state = self.states.IMMUNERIGHT
                             self.index = 0
-                    elif p.facing == "left":
-                        self.state = self.states.IMMUNERIGHT
-                        self.index = 0
