@@ -120,6 +120,16 @@ class stonegolem(pygame.sprite.Sprite):
             self.facing = "right"
             if self.index == len(self.animation) - 1:
                 self.index = 0
+        elif self.state == self.states.SHOOTLEFT:
+            self.image = self.animation[self.index]
+            self.facing = "left"
+            if self.index == len(self.animation) - 1:
+                self.index = 0
+        elif self.state == self.states.SHOOTRIGHT:
+            self.image = self.animation[self.index]
+            self.facing = "right"
+            if self.index == len(self.animation) - 1:
+                self.index = 0
         elif self.state == self.states.DEATHLEFT:
             self.image = self.animation[self.index]
             self.facing = "left"
@@ -196,8 +206,10 @@ class stonegolem(pygame.sprite.Sprite):
         if self.health <= 0:
             if self.facing == "left":
                 self.state = self.states.DEATHLEFT
+                self.index = 0
             else:
                 self.state = self.states.DEATHRIGHT
+                self.index = 0
 
         self.hitcounter += 1
         self.counter += 1
@@ -209,28 +221,31 @@ class stonegolem(pygame.sprite.Sprite):
 
     def think(self):
         if self.state != self.states.DEATHRIGHT and self.state != self.states.DEATHLEFT:
-            for p in Config.player_sprite:
-                if self.rect.x - 50 <= p.rect.right <= self.rect.x:
-                    self.index = 0
-                    self.state = self.states.SHOOTLEFT
-
-                elif self.rect.right <= p.rect.x <= self.rect.right + 50:
-                    self.index = 0
-                    self.state = self.states.SHOOTRIGHT
-
-                elif self.rect.x - 2000 <= p.rect.x <= self.rect.x - 150:
-                    if p.facing == "left":
-                        if self.rect.x - 300 <= p.rect.x <= self.rect.x - 150:
-                            self.index = 0
-                            self.state = self.states.MOVELEFT
-                    elif p.facing == "right":
+            if player_sprite:
+                for p in player_sprite:
+                    if self.rect.x - 50 <= p.rect.right <= self.rect.x:
+                        self.state = self.states.SHOOTLEFT
                         self.index = 0
-                        self.state = self.states.IMMUNELEFT
-                elif self.rect.right + 50 <= p.rect.x <= self.rect.right + 2000:
-                    if p.facing == "right":
-                        if self.rect.right + 50 <= p.rect.x <= self.rect.right + 300:
-                            self.index = 0
-                            self.state = self.states.MOVERIGHT
-                    elif p.facing == "left":
+
+                    elif self.rect.right <= p.rect.x <= self.rect.right + 50:
+                        self.state = self.states.SHOOTRIGHT
                         self.index = 0
-                        self.state = self.states.IMMUNERIGHT
+
+                    elif self.rect.x - 2000 <= p.rect.x <= self.rect.x - 150:
+                        if p.facing == "left":
+                            if self.rect.x - 300 <= p.rect.x <= self.rect.x - 150:
+                                self.state = self.states.MOVELEFT
+                                self.index = 0
+                        elif p.facing == "right":
+                            self.state = self.states.IMMUNELEFT
+                            self.index = 0
+                    elif self.rect.right + 50 <= p.rect.x <= self.rect.right + 2000:
+                        if p.facing == "right":
+                            if self.rect.right + 50 <= p.rect.x <= self.rect.right + 300:
+                                self.state = self.states.MOVERIGHT
+                                self.index = 0
+                        elif p.facing == "left":
+                            self.state = self.states.IMMUNERIGHT
+                            self.index = 0
+            else:
+                self.index = 0

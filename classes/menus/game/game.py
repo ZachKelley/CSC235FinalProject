@@ -1,6 +1,7 @@
 import pygame.sprite
 
 import Config
+import died
 from Config import *
 from classes.objects.enemies.laserflea import laserflea
 from classes.objects.enemies.poisonchomper import poisonchomper
@@ -64,6 +65,9 @@ def run():
     for p in player_sprite:
         p.bullets.draw(Config.map)
         p.bullets.update()
+        if p.health <= 0:
+            player_sprite.remove(p)
+            Config.current_menu = died
     player_sprite.draw(Config.map)
     test_sprites.draw(Config.map)
 

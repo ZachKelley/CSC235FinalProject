@@ -1,17 +1,18 @@
-import pygame
-from pygame import *
-
-from classes.menus.main_menu import main_menu
+import Config
+from Config import *
+from classes.menus.game import game
 
 pygame.init()
+pygame.font.init()
 
-WIN = pygame.display.set_mode(980, 980)
 
 bg = pygame.image.load("./backgroundSpace.png")
+bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 
 
-def diedMenu():
-    WIN.blit(bg)
-    text = font.render("You have died and did not complete you mission to get back into orbit. Please try again...", 1, (0, 0, 0))
-    WIN.blit(text, (450, 450))
+def run():
+    WIN.blit(bg, (0,0))
+    font = pygame.font.Font("./OpenSans-Bold.ttf", 36)
+    text = font.render("You have died and did not complete you mission to get back into orbit. Please try again...", True, (255,255,255))
+    WIN.blit(text, (200, 450))
     pygame.display.update()
