@@ -10,9 +10,11 @@ pygame.font.init()
 
 bg = pygame.image.load("./backgroundSpace.png")
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
+counter = 0
 
 
 def run():
+    global counter
     WIN.blit(bg, (0, 0))
     font = pygame.font.Font("./OpenSans-Bold.ttf", 36)
     text1 = font.render("Congratulations you have completed your mission and picked up all", True, (255, 255, 255))
@@ -28,9 +30,11 @@ def run():
 
     WIN.blit(start, (WIDTH / 2 - start.get_width() / 2, HEIGHT / 2 - start.get_height() / 2))
 
-    keys = pygame.key.get_pressed()
-    if keys.__contains__(1):
-        pygame.quit()
-        sys.exit()
+    if counter > 200:
+        keys = pygame.key.get_pressed()
+        if keys.__contains__(1):
+            pygame.quit()
+            sys.exit()
 
     pygame.display.update()
+    counter += 1
