@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
     counter = 0
     shootcounter = 0
     jumpcounter = 30
-    fire = Sound("./gunsound.mp3")
+    fire = Sound("./Sounds/gunsound.mp3")
 
     # images
     idle = pygame.image.load(

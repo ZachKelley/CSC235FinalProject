@@ -6,7 +6,7 @@ import Config
 from Config import *
 from classes.menus.main_menu import main_menu
 
-music = Sound("./backgroundsound.mp3")
+music = Sound("./Sounds/backgroundsound.mp3")
 music.set_volume(.2)
 
 Config.current_menu = main_menu

@@ -8,7 +8,7 @@ from Config import *
 pygame.init()
 pygame.font.init()
 
-death = Sound("./deathsound.mp3")
+death = Sound("./Sounds/deathsound.mp3")
 
 bg = pygame.image.load("./backgroundSpace.png")
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
