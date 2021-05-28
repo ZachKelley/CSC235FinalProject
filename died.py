@@ -16,7 +16,8 @@ counter = 0
 
 def run():
     global counter
-    death.play()
+    if counter < 1:
+        channel2.play(death)
 
     WIN.blit(bg, (0,0))
     font = pygame.font.Font("./OpenSans-Bold.ttf", 36)
