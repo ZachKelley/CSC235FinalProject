@@ -121,11 +121,18 @@ def run():
     if not objective_sprites:
         Config.current_menu = won
 
+    for l in Config.lasers:
+        if l.done:
+            Config.lasers.remove(l)
+
     player_sprite.draw(Config.map)
     test_sprites.draw(Config.map)
     objective_sprites.draw(Config.map)
+    lasers.draw(Config.map)
 
     pygame.display.update()
     test_sprites.update()
     player_sprite.update()
     objective_sprites.update()
+    lasers.update()
+

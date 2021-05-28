@@ -1,12 +1,14 @@
 import pygame.sprite
 
 import Config
+from Config import *
 from Images.Animations.Animation import Animation
 
 
 class golemlaser(pygame.sprite.Sprite):
 
     counter = 0
+    damagecounter = 0
 
     #animation
     laser = pygame.image.load("./Images/enemies/Mecha-stone Golem 0.1/weapon PNG/Laser_sheet.png")
@@ -21,6 +23,7 @@ class golemlaser(pygame.sprite.Sprite):
 
     def __init__(self, x , y, dir):
         pygame.sprite.Sprite.__init__(self)
+        self.done = False
         self.dir = dir
         if dir == "left":
             self.image = self.laserleft[9]
@@ -34,5 +37,26 @@ class golemlaser(pygame.sprite.Sprite):
         else:
             self.rect.x = x
         self.rect.y = y
+        self.hitmask = pygame.mask.from_surface(self.image)
+
+    def update(self):
+        if self.counter > 10:
+            self.done = True
+
+        for p in player_sprite:
+            px = p.rect.x
+            py = p.rect.y
+            sx = self.rect.x
+            sy = self.rect.y
+
+            offset = (px - sx, py - sy)
+            result = self.hitmask.overlap(p.hitmask, offset)
+            if result:
+                if p.health > 0:
+                    if self.damagecounter > 7:
+                        self.damagecounter = 0
+                        p.damage(3)
+        self.counter += 1
+        self.damagecounter += 1
 
 
