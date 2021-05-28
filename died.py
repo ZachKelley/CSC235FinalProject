@@ -12,8 +12,10 @@ death = Sound("./Sounds/deathsound.mp3")
 
 bg = pygame.image.load("./backgroundSpace.png")
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
+counter = 0
 
 def run():
+    global counter
     death.play()
 
     WIN.blit(bg, (0,0))
@@ -26,9 +28,11 @@ def run():
 
     WIN.blit(start, (WIDTH / 2 - start.get_width() / 2, HEIGHT / 2 - start.get_height() / 2))
 
-    keys = pygame.key.get_pressed()
-    if keys.__contains__(1):
-        pygame.quit()
-        sys.exit()
+    if counter > 200:
+        keys = pygame.key.get_pressed()
+        if keys.__contains__(1):
+            pygame.quit()
+            sys.exit()
 
     pygame.display.update()
+    counter += 1
